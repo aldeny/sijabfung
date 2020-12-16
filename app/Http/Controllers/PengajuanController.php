@@ -167,7 +167,7 @@ class PengajuanController extends Controller
 			]);
 
 			$persyaratan = DB::table('tbl_persyaratan')
-							->select()
+							->select();
 
 			if ($tambah) {
 				return response()->json(['success' => 'Data berhasil ditambahkan']);
