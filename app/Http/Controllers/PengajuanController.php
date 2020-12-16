@@ -161,7 +161,7 @@ class PengajuanController extends Controller
 				'tempat_lahir'		=> $request->t_lahir,
 				'tanggal_lahir'		=> $request->tgl_lahir,
 				'tahap_pengajuan' 	=> '1',
-				'status_pengajuan' 	=> 'Diproses',
+				'status_pengajuan' 	=> 'Diajukan',
 				'tunjangan'			=> $request->tunjangan,
 				'created'		 	=> Carbon::now()
 			]);

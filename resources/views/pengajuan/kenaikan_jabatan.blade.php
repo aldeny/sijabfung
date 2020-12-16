@@ -37,7 +37,7 @@
                   <i class="fa fa-plus"></i>
                   </span>  Tambah pengajuan SK</button>
                 </button>
-              @elseif(($status[0]->status_pengajuan == "Diajukan") || ($status[0]->status_pengajuan == 'Belum Diajukan'))
+              @elseif(($status[0]->status_pengajuan == "Diajukan") /* || ($status[0]->status_pengajuan == 'Belum Diajukan') */)
                 <button type="button" class="btn btn-rounded btn-primary disabled" title="Tidak bisa mengajukan permohonan karena dalam proses diajukan!">
                   <i class="fa fa-plus"></i>
                   </span>  Tambah Pengajuan SK</button>
@@ -319,7 +319,7 @@
               $('#datatable').DataTable().ajax.reload();
               $('#form').modal('hide');
               $('#btn_simpan').text('Simpan Data');
-              document.getElementById("btn_simpan").disabled= false;
+              document.getElementById("btn_simpan").disabled= true;
               
               if(data.success){
                     const Toast = Swal.mixin({
