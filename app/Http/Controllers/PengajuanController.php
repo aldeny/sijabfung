@@ -167,7 +167,15 @@ class PengajuanController extends Controller
 			]);
 
 			$persyaratan = DB::table('tbl_persyaratan')
-							->select();
+				->select('id_dokumen', 'nama_dokumen')
+				->get();
+
+			foreach ($persyaratan as $p) {
+				$berkas = DB::table('tbl_berkas_pengajuan')
+				->insert([
+					
+				]);
+			}
 
 			if ($tambah) {
 				return response()->json(['success' => 'Data berhasil ditambahkan']);
