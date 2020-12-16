@@ -319,7 +319,8 @@
               $('#datatable').DataTable().ajax.reload();
               $('#form').modal('hide');
               $('#btn_simpan').text('Simpan Data');
-              document.getElementById("btn_simpan").disabled= true;
+              document.getElementById("btn_simpan").disabled= false;
+              document.getElementById("tambahData").disabled= true;
               
               if(data.success){
                     const Toast = Swal.mixin({
