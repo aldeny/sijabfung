@@ -149,7 +149,7 @@ class PengajuanController extends Controller
 
 	public function tambahPengajuan(Request $request){
 		if ($request->action == "tambah") {
-			$tambah = DB::table('tbl_pengajuan')->insert([
+			$tambah = DB::table('tbl_pengajuan')->insertGetId([
 
 				'nip' 				=> $request->nip,
 				'jenis' 			=> 'kenaikan',
@@ -173,7 +173,9 @@ class PengajuanController extends Controller
 			foreach ($persyaratan as $p) {
 				$berkas = DB::table('tbl_berkas_pengajuan')
 				->insert([
-					
+					'id_pengajuan' => $tambah,
+					'id_dokumen'   => $p->id_dokumen,
+					'created'	   => date_create('now')->format('Y-m-d H:i:s')
 				]);
 			}
 
