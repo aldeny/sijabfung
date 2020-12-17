@@ -42,9 +42,9 @@ Route::group(['middleware' => 'usersession'], function () {
     Route::get('/kenaikan/syarat', 'PengajuanController@getSyarat');
     //Route::get('/kenaikanjabatan/edit/{id}', 'PengajuanController@editPengajuan');
 
-    Route::get('/upload/berkas', 'BerkasController@iberkas');
+    Route::get('/upload/berkas/{id}', 'BerkasController@syaratBerkas');
     Route::post('/proses/upload', 'BerkasController@upload');
-    Route::get('/upload/syarat', 'BerkasController@getSyarat');
+    Route::get('/upload/syarat/{id}', 'BerkasController@getSyarat');
 
     /* Untuk PersyaratanController */
     // Kenaikan Jabatan

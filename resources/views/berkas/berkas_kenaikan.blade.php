@@ -70,7 +70,7 @@
                         <input type="hidden" id="id_syarat" name="id_syarat" value="">
                         <input type="hidden" id="id_permohonan" name="id_permohonan" value="1">
                         <input type="hidden" id="jenis" name="jenis" value="">
-                        <input type="hidden" id="namaberkas" name="namaberkas" value="{{ $nip }}">
+                        <input type="hidden" id="namaberkas" name="namaberkas" value="{{ $nip ?? '' }}">
                         <div class="embed-responsive embed-responsive-16by9">
                             <iframe id="preview_file" class="embed-responsive-item" allowfullscreen></iframe>
                         </div><br>
@@ -118,16 +118,19 @@
         
         /* Start Datatable */
         $(function () {
+            var id_pengajuan = '{{$data['id_pengajuan']}}';
+            //alert(id_pengajuan);
+
             var oTable = $('#datatable').DataTable({
                 processing: true,
                 serverSide: false,
                 "paging":   false,
                 ajax: {
-                    url: "/upload/syarat"
+                    url: "/upload/syarat/"+id_pengajuan
                 },
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', className: "text-center", orderable: false, searchable: false},
-                    {data: 'nama_berkas', name: 'nama_berkas'},
+                    {data: 'nama_dokumen', name: 'nama_dokumen'},
                     {data: 'keterangan', name: 'keterangan', className: "text-center"},
                     {data: 'detail_doc', name: 'detail_doc', className: "text-center"},
                     {data: 'upload', name: 'upload', className: "text-center"},

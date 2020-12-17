@@ -79,7 +79,7 @@ class PengajuanController extends Controller
 		 ->editColumn('proses', function($row){
 			 $btn ='';
 			if ($row->tahap_pengajuan == '1') {
-				$btn = '<a href="/upload/berkas" role="button" data-id="'.$row->id_pengajuan.' title="Upload" class="btn btn-xxs btn-primary">
+				$btn = '<a href="/upload/berkas/'.$row->id_pengajuan.'" role="button" data-id="'.$row->id_pengajuan.' title="Upload" class="btn btn-xxs btn-primary">
 				<i class="fa fa-upload"></i></a>';
 			}if($row->tahap_pengajuan == '2'){
 				$btn = '<a href="javascript:void(0)" role="button" data-id="'.$row->id_pengajuan.'" title="Upload" class="btn btn-xxs btn-info disabled">

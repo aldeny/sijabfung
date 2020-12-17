@@ -20,17 +20,44 @@ class BerkasController extends Controller
         
         //$data = DB::table('tbl_persyaratan');
         //$data = DB::table('tbl_permohonan');
+        $data = array(
+            'id_pengajuan' => $id,
+         );
 
-         return view('berkas.berkas_kenaikan',
-                        ['nama_lengkap'=>$output, 
-                         'nip' => $user->nip,
-                        //'datas'=>$data->id_berkas
-                        ]);
+         return view('berkas.berkas_kenaikan',['nama_lengkap'=>$output, 'nip' => $user->nip,]);
 
     }
 
-    public function getSyarat(){
-        $query = DB::table('tbl_persyaratan')->where('jenis_dokumen', '=', 'kenaikan');
+    public function syaratBerkas($id){
+
+        $user = DB::connection('mysql2')->table('tbl_pegawai')->where('nip', '=', Session::get('username'))->first();
+        if ($user->gelar_belakang) {
+            $nama_lengkap = $user->gelar_depan.' '.strtoupper($user->nama).', '.$user->gelar_belakang;
+        }else {
+            $nama_lengkap = $user->gelar_depan.' '.strtoupper($user->nama);
+        }
+        $output = $nama_lengkap;
+
+        $pengajuan = DB::table('tbl_pengajuan')
+                    ->select('id_pengajuan')
+                    ->where('id_pengajuan', '=', $id)
+                    ->orderByRaw('created DESC')
+                    ->first();
+
+        $data = array(
+                'id_pengajuan' => $id,
+        );
+
+        return view('berkas.berkas_kenaikan',['nama_lengkap'=>$output, 'nip' => $user->nip,], compact('data', 'pengajuan'));
+    }
+
+    public function getSyarat($id){
+        $query = DB::table('tbl_persyaratan as ps')
+                    ->select('ps.id_dokumen', 'ps.nama_dokumen', 'ps.keterangan')
+                    ->leftJoin('tbl_berkas_pengajuan as bp', 'ps.id_dokumen', '=', 'bp.id_dokumen')
+                    ->leftJoin('tbl_pengajuan as pj', 'bp.id_pengajuan', '=', 'pj.id_pengajuan')
+                    ->where('bp.id_pengajuan', '=', $id)
+                    ->orderByRaw('ps.id_dokumen ASC');
 
         return DataTables::queryBuilder($query)
         ->addIndexColumn()
@@ -45,12 +72,12 @@ class BerkasController extends Controller
         ->addColumn('detail_doc', function($row){
             $btn ='';
             //$btn = '<a href="#" class="btn btn-primary shadow btn-xs sharp mr-1"><i class="fa fa-search" aria-hidden="true"></i></a>';
-            $btn = '<a href="javascript:void(0)" role="button" data-id="'.Session::get('username').'/'.$row->id_berkas.'" class="btn btn-primary shadow btn-xs sharp mr-1 lihatFile"><i class="fa fa-search" aria-hidden="true"></i></a>';
+            $btn = '<a href="javascript:void(0)" role="button" data-id="'.Session::get('username').'/'.$row->id_dokumen.'" class="btn btn-primary shadow btn-xs sharp mr-1 lihatFile"><i class="fa fa-search" aria-hidden="true"></i></a>';
             return $btn;
         })
         ->addColumn('upload', function($row){
             $btn ='';
-            $btn = '<a href="javascript:void(0)" role="button" data-id="'.$row->id_berkas.'" class="btn btn-primary shadow btn-xs sharp mr-1 upload"><i class="fa fa-upload" aria-hidden="true"></i></a>';
+            $btn = '<a href="javascript:void(0)" role="button" data-id="'.$row->id_dokumen.'" class="btn btn-primary shadow btn-xs sharp mr-1 upload"><i class="fa fa-upload" aria-hidden="true"></i></a>';
             return $btn;
         })
         ->addColumn('status', function($row){
@@ -80,7 +107,7 @@ class BerkasController extends Controller
         //dd($tujuan_upload);
 
          /* $tambah = DB::table('tbl_berkas')->insert([
-            'id_berkas'     =>$request->id_berkas,
+            'id_dokumen'     =>$request->id_dokumen,
             'id_permohonan' => $request->id_permohonan,
             'jenis_berkas'  => $request->jenis,
             'dokumen'       => $berkas,
